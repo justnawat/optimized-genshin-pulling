@@ -3,7 +3,6 @@
 import os
 import sys
 import pandas as pd
-import json
 
 
 def generate_default_df():
