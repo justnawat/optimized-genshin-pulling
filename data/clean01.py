@@ -8,7 +8,8 @@ import json
 
 def generate_default_df():
     return pd.DataFrame({
-        "DateTime": [],
+        "Date": [],
+        "Time": [],
         "Type": [],
         "Rarity": [],
         "Banner": []
@@ -40,6 +41,11 @@ for sub_dir in sub_dirs:
             data = data.drop(["Name"], axis=1)
             data["Banner"] = banner
 
+            pairs = data["DateTime"].map(lambda s: s.split())
+            data["Date"] = [pair[0] for pair in pairs]
+            data["Time"] = [pair[1] for pair in pairs]
+            data = data.drop(["DateTime"], axis=1)
+
             return data
         return generate_default_df()
 
@@ -49,5 +55,9 @@ for sub_dir in sub_dirs:
 
     combined_df = pd.concat(
         [combined_df, permanent_df, character_banner_df, weapon_banner_df])
+    break
 
-combined_df.to_csv(f"{base_path}/data01.csv", index=False)
+combined_df\
+    .reindex(columns=["Rarity", "Date", "Time", "Banner", "Type"])\
+    .astype({"Banner": int, "Rarity": int})\
+    .to_csv(f"{base_path}/data01.csv", index=False)
