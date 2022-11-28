@@ -6,7 +6,7 @@ import pandas as pd
 import random as rd
 
 
-SAMPLE_SIZE = 200
+SAMPLE_SIZE = 500
 
 
 def generate_default_df():
@@ -49,6 +49,7 @@ for sub_dir in sub_dirs:
                 .rename(columns=translation)
             data["Type"] = data["Type"].replace(translation)
             data = data.drop(["Name", "Pull ID"], axis=1)
+            data = data[data.Banner != 100]
 
             pairs = data["DateTime"].map(lambda s: s.split())
             data["Date"] = [pair[0] for pair in pairs]
