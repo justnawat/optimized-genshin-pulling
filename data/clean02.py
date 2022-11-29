@@ -6,7 +6,7 @@ import pandas as pd
 import random as rd
 
 
-SAMPLE_SIZE = 200 if len(sys.argv) != 3 else int(sys.argv[2])
+SAMPLE_SIZE = 200 if len(sys.argv) != 3 else -1 if sys.argv[2] == "all" else int(sys.argv[2])
 
 
 def generate_default_df():
@@ -23,7 +23,8 @@ if len(sys.argv) != 2:
     print("Usage ./clean02.py <base/path/to/data/>")
 
 base_path = sys.argv[1]
-sub_dirs = rd.sample(os.listdir(f"{base_path}/02/"), SAMPLE_SIZE)
+all_subdirs = os.listdir(f"{base_path}/02/")
+sub_dirs = rd.sample(all_subdirs, SAMPLE_SIZE if SAMPLE_SIZE != -1 else len(all_subdirs))
 
 translation = {
     "name": "Name",
@@ -39,7 +40,9 @@ translation = {
 
 combined_df = generate_default_df()
 
-for sub_dir in sub_dirs:
+for i, sub_dir in enumerate(sub_dirs):
+    print(i, end=' ')
+
     def load_df() -> pd.DataFrame:
         current_file_path = f"{base_path}/02/{sub_dir}"
         if os.path.getsize(current_file_path) != 0:
