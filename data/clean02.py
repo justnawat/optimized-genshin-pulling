@@ -6,7 +6,7 @@ import pandas as pd
 import random as rd
 
 
-SAMPLE_SIZE = 1000
+SAMPLE_SIZE = 200 if len(sys.argv) != 3 else int(sys.argv[2])
 
 
 def generate_default_df():
