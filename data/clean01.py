@@ -30,7 +30,6 @@ translation = {
     "角色": "Character"
 }
 
-
 combined_df = generate_default_df()
 
 for sub_dir in sub_dirs:
@@ -45,11 +44,6 @@ for sub_dir in sub_dirs:
             data = data.drop(["Name"], axis=1)
             data["Banner"] = banner
 
-            pairs = data["DateTime"].map(lambda s: s.split())
-            data["Date"] = [pair[0] for pair in pairs]
-            data["Time"] = [pair[1] for pair in pairs]
-            data = data.drop(["DateTime"], axis=1)
-
             return data
         return generate_default_df()
 
@@ -61,6 +55,6 @@ for sub_dir in sub_dirs:
         [combined_df, permanent_df, character_banner_df, weapon_banner_df])
 
 combined_df\
-    .reindex(columns=["Rarity", "Date", "Time", "Banner", "Type"])\
+    .reindex(columns=["Rarity", "DateTime", "Banner", "Type"])\
     .astype({"Banner": int, "Rarity": int})\
     .to_csv(f"{base_path}/data01.csv", index=False)

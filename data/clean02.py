@@ -6,7 +6,7 @@ import pandas as pd
 import random as rd
 
 
-SAMPLE_SIZE = 500
+SAMPLE_SIZE = 1000
 
 
 def generate_default_df():
@@ -51,11 +51,6 @@ for sub_dir in sub_dirs:
             data = data.drop(["Name", "Pull ID"], axis=1)
             data = data[data.Banner != 100]
 
-            pairs = data["DateTime"].map(lambda s: s.split())
-            data["Date"] = [pair[0] for pair in pairs]
-            data["Time"] = [pair[1] for pair in pairs]
-            data = data.drop(["DateTime"], axis=1)
-
             return data
         return generate_default_df()
 
@@ -63,6 +58,6 @@ for sub_dir in sub_dirs:
     combined_df = pd.concat([combined_df, new_df])
 
 combined_df\
-    .reindex(columns=["Rarity", "Date", "Time", "Banner", "Type"])\
+    .reindex(columns=["Rarity", "DateTime", "Banner", "Type"])\
     .astype({"Banner": int, "Rarity": int})\
     .to_csv(f"{base_path}/data02.csv", index=False)
